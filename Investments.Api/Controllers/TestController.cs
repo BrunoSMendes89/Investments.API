@@ -1,13 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Bases;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Service.Models;
+using System.Net;
 
 namespace Investments.Api.Controllers
 {
-    public class TestController : Controller
+    public class TestController : BaseController<TestController>
     {
-        [HttpGet("HelloWorld")]
-        public string HelloWorld()
+        public TestController(IMediator mediator) : base(mediator){}
+
+        [HttpGet("TestHandler")]
+        [ProducesResponseType(typeof(TestResponse), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Testhandlers(TestRequest request)
         {
-            return "Hello World";
+            return await CreateActionResult(request);
         }
     }
 }
