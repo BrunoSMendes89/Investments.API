@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Persistence.Context;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Service.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +12,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Connection String
+string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+//Connection
+builder.Services.AddDbContext<MySqlContext>(options =>
+                options.UseMySql(mySqlConnection,
+                ServerVersion.AutoDetect(mySqlConnection),
+                b => b.MigrationsAssembly("Investments.Api").SchemaBehavior(MySqlSchemaBehavior.Ignore)));
 // Register MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<TestHandler>());
 
