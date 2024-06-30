@@ -1,4 +1,4 @@
-﻿using Bases;
+﻿using Bases.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Service.Models;
@@ -10,7 +10,7 @@ namespace Investments.Api.Controllers
     {
         public ProductsController(IMediator mediator) : base(mediator) { }
 
-        [HttpGet("GetProducts")]
+        [HttpGet("products")]
         [ProducesResponseType(typeof(GetProductsResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetProducts(GetProductsRequest request)
         {

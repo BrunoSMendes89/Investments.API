@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace Bases
+namespace Bases.Controllers
 {
     public abstract class BaseController<TController> : ControllerBase
     {
