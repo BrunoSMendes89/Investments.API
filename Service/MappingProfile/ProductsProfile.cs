@@ -9,6 +9,7 @@ namespace Service.MappingProfile
         public ProductsProfile()
         {
             CreateMap<Product, GetProductsResponse>();
+            CreateMap<PostProductRequest,Product>();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using Domain.Enums;
+
+namespace Domain.Entities
 {
     public class Customer
     {
@@ -7,6 +9,6 @@
         public string AccountNumber { get; set; }
         public double AccountBalance { get; set; }
         public ICollection<Product> Products { get; set; }
-        public List<BankStatement> BankStatements { get; set; }
+        public List<Transaction> Transactions { get; set; }        
     }
 }

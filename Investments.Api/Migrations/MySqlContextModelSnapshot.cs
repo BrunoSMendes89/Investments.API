@@ -37,33 +37,6 @@ namespace Investments.Api.Migrations
                     b.ToTable("CustomerProduct");
                 });
 
-            modelBuilder.Entity("Domain.Entities.BankStatement", b =>
-                {
-                    b.Property<int>("BankStatementId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("BankStatementId"));
-
-                    b.Property<decimal>("ClosingBalance")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("OpeningBalance")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<DateTime>("StatementDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("BankStatementId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("bankstatements", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
@@ -119,10 +92,10 @@ namespace Investments.Api.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TransactionId"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<double>("Amount")
+                        .HasColumnType("double");
 
-                    b.Property<int>("BankStatementId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -136,7 +109,7 @@ namespace Investments.Api.Migrations
 
                     b.HasKey("TransactionId");
 
-                    b.HasIndex("BankStatementId");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("transactions", (string)null);
                 });
@@ -175,10 +148,10 @@ namespace Investments.Api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.BankStatement", b =>
+            modelBuilder.Entity("Domain.Entities.Transaction", b =>
                 {
                     b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany("BankStatements")
+                        .WithMany("Transactions")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -186,25 +159,9 @@ namespace Investments.Api.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Transaction", b =>
-                {
-                    b.HasOne("Domain.Entities.BankStatement", "BankStatement")
-                        .WithMany("Transactions")
-                        .HasForeignKey("BankStatementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BankStatement");
-                });
-
-            modelBuilder.Entity("Domain.Entities.BankStatement", b =>
-                {
-                    b.Navigation("Transactions");
-                });
-
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
-                    b.Navigation("BankStatements");
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }
