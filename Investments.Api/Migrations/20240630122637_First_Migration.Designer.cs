@@ -12,8 +12,8 @@ using Persistence.Context;
 namespace Investments.Api.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20240630014905_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20240630122637_First_Migration")]
+    partial class First_Migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace Investments.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("CustomersProducts", b =>
+                {
+                    b.Property<int>("CustomersCustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductsProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CustomersCustomerId", "ProductsProductId");
+
+                    b.HasIndex("ProductsProductId");
+
+                    b.ToTable("CustomersProducts");
+                });
 
             modelBuilder.Entity("Domain.Entities.Customers", b =>
                 {
@@ -52,9 +67,6 @@ namespace Investments.Api.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ProductId"));
 
-                    b.Property<int?>("CustomersCustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime(6)");
 
@@ -68,8 +80,6 @@ namespace Investments.Api.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ProductId");
-
-                    b.HasIndex("CustomersCustomerId");
 
                     b.ToTable("products", (string)null);
                 });
@@ -93,16 +103,19 @@ namespace Investments.Api.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Products", b =>
+            modelBuilder.Entity("CustomersProducts", b =>
                 {
                     b.HasOne("Domain.Entities.Customers", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CustomersCustomerId");
-                });
+                        .WithMany()
+                        .HasForeignKey("CustomersCustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("Domain.Entities.Customers", b =>
-                {
-                    b.Navigation("Products");
+                    b.HasOne("Domain.Entities.Products", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

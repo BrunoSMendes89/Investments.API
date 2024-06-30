@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Mapping
 {
-    public class ProductsMap : IEntityTypeConfiguration<Products>
+    public class ProductsMap : IEntityTypeConfiguration<Product>
     {
-        public void Configure(EntityTypeBuilder<Products> builder)
+        public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.ToTable("products");
             builder.HasKey(a => a.ProductId);

@@ -21,6 +21,8 @@ builder.Services.AddDbContext<MySqlContext>(options =>
                 b => b.MigrationsAssembly("Investments.Api").SchemaBehavior(MySqlSchemaBehavior.Ignore)));
 // Register MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<TestHandler>());
+// Configuração do AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
