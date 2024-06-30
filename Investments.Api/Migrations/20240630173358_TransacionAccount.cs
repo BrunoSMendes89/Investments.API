@@ -18,7 +18,7 @@ namespace Investments.Api.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "AccountNumber",
                 table: "customers",
-                type: "longtext",
+                type: "varchar(50)",
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int")
@@ -30,29 +30,6 @@ namespace Investments.Api.Migrations
                 type: "double",
                 nullable: false,
                 defaultValue: 0.0);
-
-            migrationBuilder.CreateTable(
-                name: "bankstatements",
-                columns: table => new
-                {
-                    BankStatementId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    StatementDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    OpeningBalance = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    ClosingBalance = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_bankstatements", x => x.BankStatementId);
-                    table.ForeignKey(
-                        name: "FK_bankstatements_customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "customers",
-                        principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "CustomerProduct",
@@ -86,28 +63,23 @@ namespace Investments.Api.Migrations
                     TransactionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    Description = table.Column<string>(type: "varchar(50)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Amount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Amount = table.Column<double>(type: "double", nullable: false),
                     TransactionType = table.Column<int>(type: "int", nullable: false),
-                    BankStatementId = table.Column<int>(type: "int", nullable: false)
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_transactions", x => x.TransactionId);
                     table.ForeignKey(
-                        name: "FK_transactions_bankstatements_BankStatementId",
-                        column: x => x.BankStatementId,
-                        principalTable: "bankstatements",
-                        principalColumn: "BankStatementId",
+                        name: "FK_transactions_customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "customers",
+                        principalColumn: "CustomerId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_bankstatements_CustomerId",
-                table: "bankstatements",
-                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CustomerProduct_ProductsProductId",
@@ -115,9 +87,9 @@ namespace Investments.Api.Migrations
                 column: "ProductsProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_BankStatementId",
+                name: "IX_transactions_CustomerId",
                 table: "transactions",
-                column: "BankStatementId");
+                column: "CustomerId");
         }
 
         /// <inheritdoc />
@@ -128,9 +100,6 @@ namespace Investments.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "transactions");
-
-            migrationBuilder.DropTable(
-                name: "bankstatements");
 
             migrationBuilder.DropColumn(
                 name: "AccountBalance",

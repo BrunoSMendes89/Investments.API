@@ -10,7 +10,7 @@ namespace Persistence.Mapping
         {
             builder.ToTable("customers");
             builder.HasKey(a => a.CustomerId);
-            builder.HasMany(c => c.BankStatements).WithOne(bs => bs.Customer).HasForeignKey(bs => bs.CustomerId);
+            builder.HasMany(c => c.Transactions).WithOne(bs => bs.Customer).HasForeignKey(bs => bs.CustomerId);
         }
     }
 }

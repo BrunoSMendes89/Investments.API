@@ -14,10 +14,18 @@ namespace Investments.Api.Controllers
 
         [HttpPost("createcustomer")]
         [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetProducts(PostCustomerRequest request)
+        public async Task<IActionResult> CreaterCustomer([FromBody] PostCustomerRequest request)
         {
             return await CreateActionResult(request);
         }
+
+        [HttpPost("createproduct")]
+        [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> CreateProduct([FromBody] PostProductRequest request)
+        {
+            return await CreateActionResult(request);
+        }
+
 
     }
 }

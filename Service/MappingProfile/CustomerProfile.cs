@@ -9,6 +9,7 @@ namespace Service.MappingProfile
         public CustomerProfile()
         {
             CreateMap<PostCustomerRequest,Customer>();
+            CreateMap<PutBalanceRequest,Customer>();
         }
     }
 }
