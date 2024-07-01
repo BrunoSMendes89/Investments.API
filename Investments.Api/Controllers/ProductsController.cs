@@ -16,5 +16,12 @@ namespace Investments.Api.Controllers
         {
             return await CreateActionResult(request);
         }
+
+        [HttpPost("buyproducts")]
+        [ProducesResponseType(typeof(GetProductsResponse), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> BuyProduct([FromBody] BuyProductByCustomerRequest request)
+        {
+            return await CreateActionResult(request);
+        }
     }
 }

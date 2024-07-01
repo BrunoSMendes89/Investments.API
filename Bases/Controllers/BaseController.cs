@@ -25,6 +25,13 @@ namespace Bases.Controllers
 
                 return Ok(result);
             }
+            catch (PreconditionFailedException ex)
+            {
+                return new ConflictObjectResult(ex.Message)
+                {
+                    StatusCode = (int)HttpStatusCode.PreconditionFailed
+                };
+            }
             catch (Exception ex)
             {
                 return new ObjectResult(ex)

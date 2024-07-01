@@ -10,6 +10,8 @@ namespace Service.MappingProfile
         {
             CreateMap<Product, GetProductsResponse>();
             CreateMap<PostProductRequest,Product>();
+            CreateMap<PutProductRequest,Product>();
+            CreateMap<GetProductsResponse,Product>();
         }
     }
 }

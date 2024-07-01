@@ -2,7 +2,7 @@
 
 public class PreconditionFailedException : Exception
 {
-    public PreconditionFailedException(string message = "Precondition Failed", HttpStatusCode httpStatusCode = HttpStatusCode.PreconditionFailed) : base(message)
+    public PreconditionFailedException(string message = "Precondition Failed", Exception exception = default) : base(message, exception)
     {
     }
 }

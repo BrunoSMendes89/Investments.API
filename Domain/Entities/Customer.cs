@@ -9,6 +9,6 @@ namespace Domain.Entities
         public string AccountNumber { get; set; }
         public double AccountBalance { get; set; }
         public ICollection<Product> Products { get; set; }
-        public List<Transaction> Transactions { get; set; }        
+        public List<Transaction> Transactions { get; set; }
     }
 }

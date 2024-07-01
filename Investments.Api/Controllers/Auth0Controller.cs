@@ -1,4 +1,4 @@
-﻿using Bases;
+﻿using Bases.Controllers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Service.Auth0Login.Model;
