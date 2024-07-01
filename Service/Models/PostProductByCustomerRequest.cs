@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Service.Models
 {
-    public class BuyProductByCustomerRequest : IRequest<string>
+    public class PostProductByCustomerRequest : IRequest<string>
     {
         public int CustomerId { get; set; }
         public int ProductId { get; set; }

@@ -1,8 +1,8 @@
 ﻿using Domain.Enums;
 
-namespace Domain.Entities
+namespace Domain.Models
 {
-    public class Transaction
+    public class TransactionModel
     {
         public int TransactionId { get; set; }
         public DateTime Date { get; set; }
@@ -10,8 +10,6 @@ namespace Domain.Entities
         public double Amount { get; set; }
         public TransactionTypeEnum TransactionType { get; set; }
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
         public int? ProductId { get; set; }
-        public Product Product { get; set; }
     }
 }

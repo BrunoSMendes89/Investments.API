@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using Domain.Entities;
+using Domain.Models;
 using MediatR;
 using Persistence.Context;
-using Service.Helpers;
 using Service.Models;
 
 namespace Service.Handlers
 {
-    public class PostCustomerHandler : IRequestHandler<PostCustomerRequest, string>
+    public class PostCustomerHandler : IRequestHandler<PostCustomerRequest, CustomerModel>
     {
         private readonly MySqlContext _sqlContext;
         private readonly IMapper _mapper;
@@ -18,13 +18,13 @@ namespace Service.Handlers
             _mapper = mapper;
         }
 
-        public async Task<string> Handle(PostCustomerRequest request, CancellationToken cancellationToken)
+        public async Task<CustomerModel> Handle(PostCustomerRequest request, CancellationToken cancellationToken)
         {
             var customer = _mapper.Map<Customer>(request);
             customer.AccountNumber = GenerateAccountNumber();
             _sqlContext.Add(customer);
             await _sqlContext.SaveChangesAsync(cancellationToken);
-            return HelpersClass.SavedSuccess(customer.CustomerId);
+            return _mapper.Map<CustomerModel>(customer);
         }
 
         public static string GenerateAccountNumber()

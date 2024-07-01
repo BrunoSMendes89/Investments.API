@@ -11,6 +11,7 @@ namespace Persistence.Context
         public DbSet<User> User { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<Customer> Customer { get; set; }
+        public DbSet<CustomerProduct> CustomersProducts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -19,6 +20,7 @@ namespace Persistence.Context
             modelBuilder.Entity<User>(new UsersMap().Configure);
             modelBuilder.Entity<Customer>(new CustomersMap().Configure);
             modelBuilder.Entity<Transaction>(new TransactionMap().Configure);
+            modelBuilder.Entity<CustomerProduct>(new CustomersProductsMap().Configure);
             base.OnModelCreating(modelBuilder);
         }
 

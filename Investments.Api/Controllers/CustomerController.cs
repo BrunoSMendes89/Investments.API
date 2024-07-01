@@ -19,5 +19,12 @@ namespace Investments.Api.Controllers
         {
             return await CreateActionResult(new PutBalanceRequest { CustomerId = customerId, Amount = amount, TransactionType = transactionType});
         }
+
+        [HttpGet("transactions/{customerId}")]
+        [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetTransactions(int customerId)
+        {
+            return await CreateActionResult(new GetTransactionsRequest { CustomerId = customerId});
+        }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using Domain.Entities;
+using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
-using Service.Helpers;
 using Service.Models;
 
 namespace Service.Handlers
 {
-    public class PutProductHandler : IRequestHandler<PutProductRequest, string>
+    public class PutProductHandler : IRequestHandler<PutProductRequest, ProductModel>
     {
         private readonly MySqlContext _sqlContext;
         private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ namespace Service.Handlers
             _mapper = mapper;
         }
 
-        public async Task<string> Handle(PutProductRequest request, CancellationToken cancellationToken)
+        public async Task<ProductModel> Handle(PutProductRequest request, CancellationToken cancellationToken)
         {
             var product = await _sqlContext.Product.FirstOrDefaultAsync(p => p.ProductId == request.ProductId,cancellationToken);
             if (product == null)
@@ -30,7 +30,7 @@ namespace Service.Handlers
 
             _sqlContext.Update(product);
             await _sqlContext.SaveChangesAsync(cancellationToken);
-            return HelpersClass.UpdatedSuccess(product.ProductId);
+            return _mapper.Map<ProductModel>(product);
         }
     }
 }
