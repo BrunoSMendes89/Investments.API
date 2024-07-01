@@ -605,6 +605,7 @@ This email already exists.
     <td>TransactionType</td><td>Chose between: <b>2 = Buy, 3 = Sell</b>.</td>
   </tr>
 </table>
+
 ```json
 {
   "customerId": 0,
@@ -624,7 +625,17 @@ This email already exists.
   - `text/json`
 
 **Response Schema:** `string`
-
+```json
+{
+  "productId": 0,
+  "name": "string",
+  "price": 0,
+  "quantity": 0,
+  "productType": 1,
+  "dueDate": "2024-07-01T22:21:57.452Z",
+  "active": true
+}
+```
 </details>
 
 <details>
@@ -667,7 +678,11 @@ This email already exists.
   - `text/json`
 
 **Response Schema:** `TestResponse`
-
+```json
+{
+  "response": "Você escolheu o número 1"
+} 
+```
 </details>
 
 <details>
