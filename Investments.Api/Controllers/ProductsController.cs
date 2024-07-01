@@ -11,15 +11,15 @@ namespace Investments.Api.Controllers
         public ProductsController(IMediator mediator) : base(mediator) { }
 
         [HttpGet("products")]
-        [ProducesResponseType(typeof(GetProductsResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<GetProductsResponse>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetProducts(GetProductsRequest request)
         {
             return await CreateActionResult(request);
         }
 
-        [HttpPost("buyproducts")]
-        [ProducesResponseType(typeof(GetProductsResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> BuyProduct([FromBody] BuyProductByCustomerRequest request)
+        [HttpPost("products")]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> NegotiateProduct([FromBody] PostProductByCustomerRequest request)
         {
             return await CreateActionResult(request);
         }

@@ -13,6 +13,13 @@ namespace Investments.Api.Controllers
         {
         }
 
+        [HttpPost("createuser")]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> CreaterUser([FromBody] PostUserRequest request)
+        {
+            return await CreateActionResult(request);
+        }
+
         [HttpPost("createcustomer")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> CreaterCustomer([FromBody] PostCustomerRequest request)
@@ -39,6 +46,13 @@ namespace Investments.Api.Controllers
         public async Task<IActionResult> DeleteProduct(int productId)
         {
             return await CreateActionResult(new DeleteProductRequest { ProductId = productId});
+        }
+
+        [HttpPost("email")]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> SendEmail(SendEmailNotification request)
+        {
+            return await CreateActionResult(request);
         }
     }
 }

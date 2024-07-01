@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entities;
+using Domain.Models;
 using Service.Models;
 
 namespace Service.MappingProfile
@@ -10,6 +11,8 @@ namespace Service.MappingProfile
         {
             CreateMap<PostCustomerRequest,Customer>();
             CreateMap<PutBalanceRequest,Customer>();
+            CreateMap<Customer, CustomerModel>();
+            CreateMap<Transaction, TransactionModel>();
         }
     }
 }

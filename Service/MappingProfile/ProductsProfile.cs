@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entities;
+using Domain.Models;
 using Service.Models;
 
 namespace Service.MappingProfile
@@ -12,6 +13,7 @@ namespace Service.MappingProfile
             CreateMap<PostProductRequest,Product>();
             CreateMap<PutProductRequest,Product>();
             CreateMap<GetProductsResponse,Product>();
+            CreateMap<Product, ProductModel>();
         }
     }
 }

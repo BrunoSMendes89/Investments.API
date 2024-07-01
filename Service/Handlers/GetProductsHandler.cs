@@ -29,7 +29,7 @@ namespace Service.Handlers
 
             if (!string.IsNullOrEmpty(request.Description))
             {
-                var searchValue = request.Description.Trim()
+                var searchValue = request.Description.Trim().ToUpper()
                                                      .Replace("-","")
                                                      .Replace(".","")
                                                      .Replace("=","");

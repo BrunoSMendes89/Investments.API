@@ -37,7 +37,7 @@ namespace Service.Helpers
             }
         }
 
-        public static void UpdateCustomerProduct(Customer customer, Product product, BuyProductByCustomerRequest request, TransactionTypeEnum transactionType)
+        public static void UpdateCustomerProduct(Customer customer, Product product, PostProductByCustomerRequest request, TransactionTypeEnum transactionType)
         {
             var transaction = new Transaction
             {
@@ -49,11 +49,10 @@ namespace Service.Helpers
                 Product = product
             };
 
-
             customer.Transactions.Add(transaction);
             product.Transactions.Add(transaction);
 
-            var customerProduct = customer.Products.FirstOrDefault(p => p.ProductId == product.ProductId);
+            var customerProduct = customer.CustomerProducts.FirstOrDefault(cp => cp.ProductId == product.ProductId);
 
             if (transactionType == TransactionTypeEnum.Buy)
             {
@@ -63,88 +62,40 @@ namespace Service.Helpers
                 }
                 else
                 {
-                    var newProduct = new Product
+                    customerProduct = new CustomerProduct
                     {
+                        CustomerId = customer.CustomerId,
                         ProductId = product.ProductId,
-                        Name = product.Name,
-                        Price = product.Price,
                         Quantity = request.Quantity
                     };
-                    customer.Products.Add(newProduct);
+                    customer.CustomerProducts.Add(customerProduct);
                 }
 
+                if (product.Quantity < request.Quantity)
+                    throw new PreconditionFailedException("Not enough product in stock");
+
                 product.Quantity -= request.Quantity;
+
                 if ((customer.AccountBalance - (product.Price * request.Quantity)) < 0)
                     throw new PreconditionFailedException("Insufficient credits");
+
                 customer.AccountBalance -= product.Price * request.Quantity;
             }
             else if (transactionType == TransactionTypeEnum.Sell)
             {
                 if (customerProduct == null || customerProduct.Quantity < request.Quantity)
-                    throw new PreconditionFailedException("Quantity more than we have to sell.");
+                    throw new PreconditionFailedException("Not enough product in stock.");
 
                 customerProduct.Quantity -= request.Quantity;
+
                 if (customerProduct.Quantity == 0)
                 {
-                    customer.Products.Remove(customerProduct);
+                    customer.CustomerProducts.Remove(customerProduct);
                 }
 
                 product.Quantity += request.Quantity;
                 customer.AccountBalance += product.Price * request.Quantity;
             }
         }
-
-        //public static void UpdateCustomerProduct(Customer customer, Product product, BuyProductByCustomerRequest request, TransactionTypeEnum transactionType)
-        //{
-        //    var transaction = new Transaction
-        //    {
-        //        Date = DateTime.Now,
-        //        Description = transactionType.GetDescription(),
-        //        Amount = request.Quantity,
-        //        TransactionType = transactionType,
-        //        Customer = customer,
-        //        Product = product
-        //    };
-
-        //    if (product == null)
-        //        product = new Product { Transactions = new List<Transaction>() };
-
-        //    customer.Transactions.Add(transaction);
-        //    product.Transactions.Add(transaction);
-
-        //    var customerProduct = customer.Products.FirstOrDefault(p => p.ProductId == product.ProductId);
-
-        //    if (transactionType == TransactionTypeEnum.Buy)
-        //    {
-        //        if (customerProduct != null)
-        //        {
-        //            customerProduct.Quantity += request.Quantity;
-        //        }
-        //        else
-        //        {
-        //            var newProduct = new Product
-        //            {
-        //                ProductId = product.ProductId,
-        //                Name = product.Name,
-        //                Price = product.Price,
-        //                Quantity = request.Quantity
-        //            };
-        //            customer.Products.Add(newProduct);
-        //        }
-
-        //        product.Quantity -= request.Quantity;
-        //        if ((customer.AccountBalance - (product.Price * request.Quantity)) <= 0)
-        //            throw new PreconditionFailedException("Insufficient credits");
-        //        customer.AccountBalance -= product.Price * request.Quantity;
-        //    }
-        //    else if (transactionType == TransactionTypeEnum.Sell)
-        //    {
-        //        if (product.Quantity - request.Quantity <= 0)
-        //            throw new PreconditionFailedException("Quantity more than we have to sell.");
-        //        product.Quantity += request.Quantity;
-        //        customer.AccountBalance += product.Price;
-        //        customer.Products.Remove(product);
-        //    }
-        //}
     }
 }

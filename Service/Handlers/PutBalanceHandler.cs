@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Domain.Entities;
+using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -7,7 +9,7 @@ using Service.Models;
 
 namespace Service.Handlers
 {
-    public class PutBalanceHandler : IRequestHandler<PutBalanceRequest, string>
+    public class PutBalanceHandler : IRequestHandler<PutBalanceRequest, CustomerModel>
     {
         private readonly MySqlContext _sqlContext;
         private readonly IMapper _mapper;
@@ -18,8 +20,11 @@ namespace Service.Handlers
             _mapper = mapper;
         }
 
-        public async Task<string> Handle(PutBalanceRequest request, CancellationToken cancellationToken)
+        public async Task<CustomerModel> Handle(PutBalanceRequest request, CancellationToken cancellationToken)
         {
+            if (request.TransactionType != Domain.Enums.TransactionTypeEnum.Credit && request.TransactionType != Domain.Enums.TransactionTypeEnum.Debit)
+                throw new PreconditionFailedException("Transaction Type not Allowed");
+
             var query = _sqlContext.Customer.AsQueryable();
             var customer = await query.Include(s => s.Transactions).FirstOrDefaultAsync(c => c.CustomerId == request.CustomerId, cancellationToken);            
             if (customer is null)
@@ -27,7 +32,7 @@ namespace Service.Handlers
             HelpersClass.UpdateBalance(customer, request.Amount, request.TransactionType);
             _sqlContext.Entry(customer);
             await _sqlContext.SaveChangesAsync(cancellationToken);
-            return HelpersClass.UpdatedSuccess(customer.CustomerId);
+            return _mapper.Map<CustomerModel>(customer);
         }        
     }
 }

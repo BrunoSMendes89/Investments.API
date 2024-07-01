@@ -11,7 +11,7 @@ namespace Domain.Entities
         public ProductTypeEnum ProductType { get; set; }
         public DateTime DueDate { get; set; }
         public bool Active { get; set; }
-        public ICollection<Customer> Customers { get; set; }
+        public List<CustomerProduct> CustomerProducts { get; set; }
         public List<Transaction> Transactions { get; set; } 
     }
 }

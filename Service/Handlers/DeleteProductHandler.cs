@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -26,7 +25,7 @@ namespace Service.Handlers
             product.Active = false;
             _sqlContext.Update(product);
             await _sqlContext.SaveChangesAsync(cancellationToken);
-            return HelpersClass.UpdatedSuccess(product.ProductId);
+            return HelpersClass.DeletedSuccess(product.ProductId);
         }
     }
 }

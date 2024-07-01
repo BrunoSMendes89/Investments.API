@@ -22,21 +22,6 @@ namespace Investments.Api.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("CustomerProduct", b =>
-                {
-                    b.Property<int>("CustomersCustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomersCustomerId", "ProductsProductId");
-
-                    b.HasIndex("ProductsProductId");
-
-                    b.ToTable("CustomerProduct");
-                });
-
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
@@ -49,14 +34,32 @@ namespace Investments.Api.Migrations
                         .HasColumnType("double");
 
                     b.Property<string>("AccountNumber")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(80)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(80)");
 
                     b.HasKey("CustomerId");
 
                     b.ToTable("customers", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.CustomerProduct", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("CustomerId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("customersproducts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -74,7 +77,7 @@ namespace Investments.Api.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(80)");
 
                     b.Property<double>("Price")
                         .HasColumnType("double");
@@ -108,9 +111,9 @@ namespace Investments.Api.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(80)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("TransactionType")
@@ -133,30 +136,37 @@ namespace Investments.Api.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("UserId"));
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(80)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(80)");
 
                     b.HasKey("UserId");
 
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("CustomerProduct", b =>
+            modelBuilder.Entity("Domain.Entities.CustomerProduct", b =>
                 {
-                    b.HasOne("Domain.Entities.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomersCustomerId")
+                    b.HasOne("Domain.Entities.Customer", "Customer")
+                        .WithMany("CustomerProducts")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsProductId")
+                    b.HasOne("Domain.Entities.Product", "Product")
+                        .WithMany("CustomerProducts")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entities.Transaction", b =>
@@ -169,9 +179,7 @@ namespace Investments.Api.Migrations
 
                     b.HasOne("Domain.Entities.Product", "Product")
                         .WithMany("Transactions")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Customer");
 
@@ -180,11 +188,15 @@ namespace Investments.Api.Migrations
 
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
+                    b.Navigation("CustomerProducts");
+
                     b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
+                    b.Navigation("CustomerProducts");
+
                     b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
