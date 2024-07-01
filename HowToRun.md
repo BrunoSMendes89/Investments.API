@@ -27,10 +27,10 @@ This is an example of how to list things you need to use the software and how to
 
 ---
 
-# Make Sure You Read the Api Documentation
+### Make Sure You Read the Api Documentation
 [API Documentation](https://github.com/BrunoSMendes89/Investments.API/blob/main/README.md)
 
-# Technologies 
+### Technologies 
 <div style="display: inline_block"><br>
   <img height="50em" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" />  
   <img height="50em" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/visualstudio/visualstudio-plain.svg" />
