@@ -582,7 +582,7 @@ This email already exists.
 **Tag:** `Products`
 
 **Request Body:**
-`This endpoint will check the quantity of the product and, based on his price, will debit of his account balance.`
+`This endpoint will check the quantity of the product and, based on its price, will debit of his account balance.`
 - `application/json`
 - `text/json`
 - `application/*+json`
