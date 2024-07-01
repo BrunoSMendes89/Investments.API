@@ -350,10 +350,6 @@ This email already exists.
 **Method:** `POST`  
 **Tag:** `Backoffice`
 
-**Parameters:**
-
-- `none` (SendEmailNotification)
-
 <details>
   <summary>Response (200 OK)</summary>
 
@@ -422,12 +418,19 @@ This email already exists.
   - `application/json`
   - `text/json`
 
-**Response Schema:** `Unit`
-
+**Response Schema:** `object`
+```json
+{
+  "customerId": 0,
+  "name": "string",
+  "accountNumber": "string",
+  "accountBalance": 0
+}
+```
 </details>
 
 <details>
-  <summary>Response (412 Failed Dependency)</summary>
+  <summary>Response (412 Failed Dependency) in case TransactionType isn't <b>0 = Credit</b> or <b>1 = Debit</b></summary>
 
 **Response:**
 
@@ -436,8 +439,10 @@ This email already exists.
   - `application/json`
   - `text/json`
 
-**Response Schema:** `Unit`
-
+**Response Schema:** `string`
+```string
+  Transaction Type not Allowed
+```
 </details>
 
 </details>
@@ -450,8 +455,14 @@ This email already exists.
 **Tag:** `Customer`
 
 **Parameters:**
-
-- `customerId` (path, required, integer, int32)
+<table border="1">
+  <tr>
+    <th>Get Customer Transactions</th>
+  </tr>
+  <tr>
+    <td>CustomerId</td><td>Id of the Customer</td>
+  </tr>
+</table>
 
 <details>
   <summary>Response (200 OK)</summary>
@@ -463,8 +474,20 @@ This email already exists.
   - `application/json`
   - `text/json`
 
-**Response Schema:** `Unit`
-
+**Response Schema:** `Array of Transactions`
+```json
+[
+  {
+    "transactionId": 0,
+    "date": "2024-07-01T22:00:22.741Z",
+    "description": "string",
+    "amount": 0,
+    "transactionType": 0,
+    "customerId": 0,
+    "productId": 0
+  }
+]
+```
 </details>
 
 <details>
@@ -477,8 +500,10 @@ This email already exists.
   - `application/json`
   - `text/json`
 
-**Response Schema:** `Unit`
-
+**Response Schema:** `String`
+```string
+  Precondition Failed
+```
 </details>
 
 </details>
@@ -491,10 +516,21 @@ This email already exists.
 **Tag:** `Products`
 
 **Parameters:**
-
-- `Id` (query, integer, int32)
-- `Description` (query, string)
-- `ProductType` (query, ProductTypeEnum)
+`In this endpoint you can choose to get with how many parameters do you want. If you don't choose parameters, it will get the first 15 itens.`
+<table border="1">
+  <tr>
+    <th>Get Products</th>
+  </tr>
+  <tr>
+    <td>Id</td><td>Id of the Product</td>
+  </tr>
+  <tr>
+    <td>Description</td><td>Full or part of Product Name.</td>
+  </tr>
+  <tr>
+    <td>ProductType</td><td>Chose between: <b>1 = Stocks, 2 = REIT, 3 = Treasures, 4 = ETF, 5 = Bitcoin</b>.</td>
+  </tr>
+</table>
 
 <details>
   <summary>Response (200 OK)</summary>
@@ -507,7 +543,17 @@ This email already exists.
   - `text/json`
 
 **Response Schema:** `array of GetProductsResponse`
-
+```json
+[
+  {
+    "productId": 0,
+    "name": "string",
+    "price": 0,
+    "productType": 1,
+    "dueDate": "2024-07-01T22:05:06.525Z"
+  }
+]
+```
 </details>
 
 <details>
@@ -520,27 +566,53 @@ This email already exists.
   - `application/json`
   - `text/json`
 
-**Response Schema:** `array of GetProductsResponse`
-
+**Response Schema:** `String`
+```string
+  Precondition Failed
+```
 </details>
 
 </details>
 
 <details>
-  <summary>10. Create Product by Customer</summary>
+  <summary>10. Negotiate Product by Customer</summary>
 
 **URL:** `/products`  
 **Method:** `POST`  
 **Tag:** `Products`
 
 **Request Body:**
-
+`This endpoint will check the quantity of the product and, based on his price, will debit of his account balance.`
 - `application/json`
 - `text/json`
 - `application/*+json`
 
 **Schema:** `PostProductByCustomerRequest`
-
+<table border="1">
+  <tr>
+    <th>Get Products</th>
+  </tr>
+  <tr>
+    <td>CustomerId</td><td>Id of the Customer</td>
+  </tr>
+  <tr>
+    <td>ProductId</td><td>Id of the Product</td>
+  </tr>
+  <tr>
+    <td>Quantity</td><td>Negotiated quantity of the product.</td>
+  </tr>
+  <tr>
+    <td>TransactionType</td><td>Chose between: <b>2 = Buy, 3 = Sell</b>.</td>
+  </tr>
+</table>
+```json
+{
+  "customerId": 0,
+  "productId": 0,
+  "quantity": 0,
+  "transactionType": 0
+}
+```
 <details>
   <summary>Response (200 OK)</summary>
 
@@ -566,7 +638,9 @@ This email already exists.
   - `text/json`
 
 **Response Schema:** `string`
-
+```string
+  Transaction Type not Allowed
+```
 </details>
 
 </details>
@@ -579,7 +653,7 @@ This email already exists.
 **Tag:** `Test`
 
 **Parameters:**
-
+`Endpoint to test if API is working. No database is necessary`
 - `ChooseResponse` (query, integer, int32)
 
 <details>
