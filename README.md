@@ -1,5 +1,8 @@
 # Investments.Api Documentation
 
+* please, check how to run the api
+  [How To Run Investment.Api](https://github.com/BrunoSMendes89/Investments.API/blob/main/HowToRun.md)
+
 ## Overview
 
 **Title:** Investments.Api  
