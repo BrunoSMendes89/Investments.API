@@ -1,5 +1,7 @@
 ﻿using Bases.Controllers;
+using Domain.Entities;
 using Domain.Enums;
+using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Service.Models;
@@ -14,28 +16,28 @@ namespace Investments.Api.Controllers
         }
 
         [HttpPost("createuser")]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(User), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> CreaterUser([FromBody] PostUserRequest request)
         {
             return await CreateActionResult(request);
         }
 
         [HttpPost("createcustomer")]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CustomerModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> CreaterCustomer([FromBody] PostCustomerRequest request)
         {
             return await CreateActionResult(request);
         }
 
         [HttpPost("createproduct")]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProductModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> CreateProduct([FromBody] PostProductRequest request)
         {
             return await CreateActionResult(request);
         }
 
         [HttpPut("product/{productId}")]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProductModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateProduct(int productId, double price, int quantity, ProductTypeEnum productType, DateTime dueDate)
         {
             return await CreateActionResult(new PutProductRequest { ProductId = productId, Price = price, Quantity = quantity, ProductType = productType, DueDate = dueDate });
@@ -49,7 +51,7 @@ namespace Investments.Api.Controllers
         }
 
         [HttpPost("email")]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> SendEmail(SendEmailNotification request)
         {
             return await CreateActionResult(request);

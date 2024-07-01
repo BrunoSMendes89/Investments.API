@@ -1,4 +1,5 @@
 ﻿using Bases.Controllers;
+using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Service.Models;
@@ -18,7 +19,7 @@ namespace Investments.Api.Controllers
         }
 
         [HttpPost("products")]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProductModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> NegotiateProduct([FromBody] PostProductByCustomerRequest request)
         {
             return await CreateActionResult(request);
