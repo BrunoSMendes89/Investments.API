@@ -10,6 +10,7 @@ namespace Persistence.Mapping
         {
             builder.ToTable("products");
             builder.HasKey(a => a.ProductId);
+            builder.HasMany(c => c.Transactions).WithOne(bs => bs.Product).HasForeignKey(bs => bs.ProductId);
         }
     }
 }

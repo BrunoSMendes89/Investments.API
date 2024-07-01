@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
@@ -18,13 +17,13 @@ namespace Service.Handlers
             _sqlContext = sqlContext;
             _mapper = mapper;
         }
+
         public async Task<string> Handle(PutBalanceRequest request, CancellationToken cancellationToken)
         {
             var query = _sqlContext.Customer.AsQueryable();
             var customer = await query.Include(s => s.Transactions).FirstOrDefaultAsync(c => c.CustomerId == request.CustomerId, cancellationToken);            
             if (customer is null)
                 throw new PreconditionFailedException();
-            //customer = _mapper.Map<Customer>(request);
             HelpersClass.UpdateBalance(customer, request.Amount, request.TransactionType);
             _sqlContext.Entry(customer);
             await _sqlContext.SaveChangesAsync(cancellationToken);
