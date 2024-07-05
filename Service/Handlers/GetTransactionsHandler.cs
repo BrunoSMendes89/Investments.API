@@ -20,6 +20,8 @@ namespace Service.Handlers
         public async Task<List<TransactionModel>> Handle(GetTransactionsRequest request, CancellationToken cancellationToken)
         {
             var transactions = await _sqlContext.Customer.Include(t => t.Transactions).FirstOrDefaultAsync(c => c.CustomerId == request.CustomerId);
+            if (transactions == null)
+                throw new PreconditionFailedException();
             var response = transactions.Transactions.Select(t => new TransactionModel { TransactionId = t.TransactionId, Amount = t.Amount, TransactionType = t.TransactionType, 
                                                                                         Description = t.Description, Date = t.Date, CustomerId = t.CustomerId, ProductId = t.ProductId})
                                                                                         .ToList();

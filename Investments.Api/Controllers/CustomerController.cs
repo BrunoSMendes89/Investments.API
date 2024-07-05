@@ -1,8 +1,10 @@
 ﻿using Bases.Controllers;
 using Domain.Enums;
+using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Service.Models;
+using System.Collections.Generic;
 using System.Net;
 
 namespace Investments.Api.Controllers
@@ -14,14 +16,14 @@ namespace Investments.Api.Controllers
         }
 
         [HttpPut("balance/{customerId}")]
-        [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CustomerModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> CreaterCustomer(int customerId, TransactionTypeEnum transactionType, double amount)
         {
             return await CreateActionResult(new PutBalanceRequest { CustomerId = customerId, Amount = amount, TransactionType = transactionType});
         }
 
         [HttpGet("transactions/{customerId}")]
-        [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<TransactionModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetTransactions(int customerId)
         {
             return await CreateActionResult(new GetTransactionsRequest { CustomerId = customerId});
